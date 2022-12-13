@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameDevelopmentProject.Entity.Collision
 {
-    internal class Hitbox
+    public class Hitbox
     {
         public Hitbox(int offsetx, int offsety, int width, int height, int damage)
         {
@@ -15,12 +16,7 @@ namespace GameDevelopmentProject.Entity.Collision
             this.Damage = damage;
         }
 
-        public void UpdateOffsets()
-        {
-
-        }
-
         public Rectangle HitboxBounds { get; set; }
         public int Damage { get; set; }
-}
+    }
 }

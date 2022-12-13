@@ -1,9 +1,14 @@
 ﻿using GameDevelopmentProject.Entity;
+using GameDevelopmentProject.Entity.Animation;
 using GameDevelopmentProject.Entity.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct2D1;
+using SharpDX.Direct3D9;
 using System;
+using SamplerState = Microsoft.Xna.Framework.Graphics.SamplerState;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace GameDevelopmentProject
 {
@@ -33,8 +38,11 @@ namespace GameDevelopmentProject
 
         private void InitializeGameObjects()
         {
-            _hero = new Hero(Content.Load<Texture2D>("Sprites/Hero/Light/Run"), new KeyboardReader(), 120, 80);
-            
+            _hero = new Hero(new KeyboardReader(), 3);
+            _hero.AnimationManager.AddAnimation(AnimationState.running, Content.Load<Texture2D>("Sprites/Hero/Light/Run"), 120, 80);
+            _hero.AnimationManager.AddAnimation(AnimationState.idle, Content.Load<Texture2D>("Sprites/Hero/Light/Idle"), 120, 80);
+            _hero.AnimationManager.CurrentAnimationState = AnimationState.idle;
+            _hero.AnimationManager.AnimationScale = 1.5f;
         }
 
         protected override void Update(GameTime gameTime)
@@ -50,7 +58,7 @@ namespace GameDevelopmentProject
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             _hero.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);

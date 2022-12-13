@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,22 @@ namespace GameDevelopmentProject.Entity.Animation
     public class Animations
     {
         public AnimationFrame CurrentFrame { get; set; }
+        //public bool loopAnimation { get; }
+        public Texture2D Texture { get; }
         private List<AnimationFrame> _frames;
         private int _counter;
         private double _timeSinceLastFrame;
 
-        public Animations()
+        public Animations(Texture2D texture)
         {
-            this._frames = new List<AnimationFrame>();
+            _frames = new List<AnimationFrame>();
+            Texture = texture;
             _timeSinceLastFrame = 0;
         }
 
-        public void AddFrames(int textureWidth, int frameWidth, int frameHeight)
+        public void AddFrames(int frameWidth, int frameHeight)
         {
-            int frameCount = textureWidth / frameWidth;
+            int frameCount = Texture.Width / frameWidth;
             for (int i = 0; i < frameCount; i++)
                 this.AddFrame(new AnimationFrame(new Rectangle(frameWidth * i, 0, frameWidth, frameHeight)));
 

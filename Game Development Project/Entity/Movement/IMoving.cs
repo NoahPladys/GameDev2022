@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevelopmentProject.Entity.Controls;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace GameDevelopmentProject.Entity.Movement
     {
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
+        public IInputReader InputReader { get; set; }
+        public MovementManager MovementManager { get; set; }
     }
 }

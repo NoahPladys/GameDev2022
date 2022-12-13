@@ -14,29 +14,25 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework.Input;
 using GameDevelopmentProject.Entity.Controls;
 using GameDevelopmentProject.Entity.Movement;
-using GameDevelopmentProject.Entity.Collision;
 
 namespace GameDevelopmentProject.Entity
 {
-    public class Hero: Entity, IPlayerMovable
+    public class Hero: Entity
     {
-        public IInputReader InputReader { get; set; }
-        public MovementManager MovementManager { get; set; }
-        public Hero(Texture2D texture, IInputReader inputReader, int frameWidth, int frameHeight)
+        public Hero(IInputReader inputReader, float speed)
         {
-            _texture = texture;
-            _animation = new Animations();
-            _animation.AddFrames(texture.Width, frameWidth, frameHeight);
+            //INITIALIZE ANIMATIONS
+            AnimationManager = new AnimationManager();
+
+            //INITIALIZE MOVEMENT
             MovementManager = new MovementManager();
             InputReader = inputReader;
             Position = new Vector2(0, 0);
-            Speed = new Vector2(2, 2);
-            _hitboxes.Add(new Hitbox(, 0));
+            Speed = new Vector2(speed, 0);
         }
 
         override public void Update(GameTime gameTime)
         {
-            MovementManager.Move(this);
             base.Update(gameTime);
         }
     }
