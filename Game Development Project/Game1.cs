@@ -1,6 +1,7 @@
 ﻿using GameDevelopmentProject.Entity;
 using GameDevelopmentProject.Entity.Animation;
 using GameDevelopmentProject.Entity.Controls;
+using GameDevelopmentProject.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,6 +18,7 @@ namespace GameDevelopmentProject
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Hero _hero;
+        private Level _level;
 
         public Game1()
         {
@@ -43,14 +45,17 @@ namespace GameDevelopmentProject
             _hero.AnimationManager.AddAnimation(AnimationState.idle, Content.Load<Texture2D>("Sprites/Hero/Light/Idle"), 120, 80);
             _hero.AnimationManager.CurrentAnimationState = AnimationState.idle;
             _hero.AnimationManager.AnimationScale = 1.5f;
+
+            _level = new Level(Content);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+             
             _hero.Update(gameTime);
+            //_level.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -60,6 +65,7 @@ namespace GameDevelopmentProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             _hero.Draw(_spriteBatch);
+            _level.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
