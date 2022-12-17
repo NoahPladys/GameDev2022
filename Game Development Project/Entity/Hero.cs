@@ -14,10 +14,11 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework.Input;
 using GameDevelopmentProject.Entity.Controls;
 using GameDevelopmentProject.Entity.Movement;
+using GameDevelopmentProject.Levels;
 
 namespace GameDevelopmentProject.Entity
 {
-    public class Hero: Entity
+    public class Hero : Entity
     {
         public Hero(IInputReader inputReader, float speed)
         {
@@ -29,11 +30,13 @@ namespace GameDevelopmentProject.Entity
             InputReader = inputReader;
             Position = new Vector2(0, 0);
             Speed = new Vector2(speed, 0);
+            IsFalling = false;
+            BoundingBox = new Rectangle(50, 43, 29, 37);
         }
 
-        override public void Update(GameTime gameTime)
+        override public void Update(GameTime gameTime, Level level)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, level);
         }
     }
 }

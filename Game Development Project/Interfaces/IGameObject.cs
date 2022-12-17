@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevelopmentProject.Levels;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,8 @@ namespace GameDevelopmentProject.Interfaces
 {
     interface IGameObject
     {
-        void Update(GameTime gameTime);
+        void Update(GameTime gameTime, Level level = null);
 
-        void Draw(SpriteBatch spriteBatch);
-
+        void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0);
     }
 }
