@@ -31,7 +31,6 @@ namespace GameDevelopmentProject.Entity
             Position = new Vector2(0, 0);
             Speed = new Vector2(speed, 0);
             IsFalling = false;
-            BoundingBox = new Rectangle(50, 43, 29, 37);
         }
 
         override public void Update(GameTime gameTime, Level level)

@@ -1,8 +1,9 @@
 ﻿using GameDevelopmentProject.Entity.Animation;
-using GameDevelopmentProject.Entity.Collision;
+using GameDevelopmentProject.Interfaces;
 using GameDevelopmentProject.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,16 +50,18 @@ namespace GameDevelopmentProject.Entity.Movement
                     movable.Position = nextPosition;
                 }
 
-                //KEEP HERO IN LEVEL BOUNDS
-                float scale = 1;
-                if (movable is IAnimatable)
-                    scale *= ((IAnimatable)movable).AnimationManager.AnimationScale;
-                float boundLeft = 0;
-                float boundRight = level.Tileset.GetLength(1) * level.getTileScale() * 16 - (movable.BoundingBox.Width * scale);
-                if (movable.Position.X < boundLeft)
-                    movable.Position = new Vector2(boundLeft, movable.Position.Y);
-                else if (movable.Position.X > boundRight)
-                    movable.Position = new Vector2(boundRight, movable.Position.Y);
+                //KEEP HERO IN LEVEL BOUNDSµ
+                if(movable is ICollidable)
+                {
+                    ICollidable collidable = (ICollidable)movable;
+
+                    float boundLeft = 0;
+                    float boundRight = level.Tileset.GetLength(1) * level.getTileScale() * 16 - collidable.BoundingBox.Width;
+                    if (movable.Position.X < boundLeft)
+                        movable.Position = new Vector2(boundLeft, movable.Position.Y);
+                    else if (movable.Position.X > boundRight)
+                        movable.Position = new Vector2(boundRight, movable.Position.Y);
+                }
             }
         }
     }

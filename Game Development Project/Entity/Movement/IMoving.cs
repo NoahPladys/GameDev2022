@@ -17,7 +17,6 @@ namespace GameDevelopmentProject.Entity.Movement
         public Vector2 CurrentForce { get; set; }
         public Vector2 JumpingForce { get; set; }
         public Vector2 GravityForce { get; set; }
-        public Rectangle BoundingBox { get; set; }
         public IInputReader InputReader { get; set; }
         public MovementManager MovementManager { get; set; }
     }

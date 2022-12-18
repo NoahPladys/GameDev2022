@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevelopmentProject.Interfaces;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,19 @@ namespace GameDevelopmentProject.Entity.Animation
         public AnimationFrame CurrentFrame { get; set; }
         //public bool loopAnimation { get; }
         public Texture2D Texture { get; }
+        public Rectangle BoundingBox { get; }
+        public Rectangle ReverseBoundingBox { get; }
         private List<AnimationFrame> _frames;
         private int _counter;
         private double _timeSinceLastFrame;
 
-        public Animations(Texture2D texture)
+        public Animations(Texture2D texture, Rectangle boundingBox, Rectangle reverseBoundingBox)
         {
             _frames = new List<AnimationFrame>();
             Texture = texture;
             _timeSinceLastFrame = 0;
+            BoundingBox = boundingBox;
+            ReverseBoundingBox = reverseBoundingBox;
         }
 
         public void AddFrames(int frameWidth, int frameHeight)

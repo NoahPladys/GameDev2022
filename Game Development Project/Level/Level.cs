@@ -32,8 +32,9 @@ namespace GameDevelopmentProject.Levels
             background = content.Load<Texture2D>("Sprites/Tileset/Grass/sky");
             backgroundObject = content.Load<Texture2D>("Sprites/Tileset/Grass/background_trees");
             Hero = hero;
-            Hero.Position = new Vector2(2 * 16 * getTileScale(), 
-                (getLowestTileHeight(2) * 16 * getTileScale()) - (Hero.BoundingBox.Height * Hero.AnimationManager.AnimationScale * ScreenSizeManager.getInstance().GetScale()));
+            Hero.Position = new Vector2(
+                Tileset[11, 2].Position.X,
+                Tileset[11, 2].Position.Y - Hero.BoundingBox.Height);
         }
 
         public void Update(GameTime gameTime, Level level = null)
@@ -88,8 +89,7 @@ namespace GameDevelopmentProject.Levels
                     if (currentTile != null)
                         spriteBatch.Draw(
                             currentTile.Texture,
-                            new Vector2(currentTile.Position.X - cameraHorizontalOffset,
-                                currentTile.Position.Y),
+                            currentTile.Position - new Vector2(cameraHorizontalOffset, 0),
                             currentTile.SourceRectangle,
                             Color.White, 
                             0,
@@ -119,7 +119,7 @@ namespace GameDevelopmentProject.Levels
             return (float)Math.Round(((float)(ScreenSizeManager.getInstance().WindowHeight) / tilesetHeight / 16f), 4);
         }
 
-        private float getLowestTileHeight()
+        private int getLowestTileHeight()
         {
             for (int y = 0; y < Tileset.GetLength(0); y++)
             {
@@ -138,7 +138,7 @@ namespace GameDevelopmentProject.Levels
             return Tileset.GetLength(0);
         }
 
-        private float getLowestTileHeight(int x)
+        private int getLowestTileHeight(int x)
         {
             for (int y = 0; y < Tileset.GetLength(0); y++)
             {
@@ -150,11 +150,12 @@ namespace GameDevelopmentProject.Levels
 
         private float getCameraHorizontalOffset(Hero hero)
         {
+            Debug.WriteLine(this.Tileset.GetLength(1));
             int screenWidth = ScreenSizeManager.getInstance().WindowWidth;
-            if (hero.Position.X < screenWidth / 3)
+            if (hero.Position.X < (screenWidth / 3))
                 return 0;
             else if((hero.Position.X - (screenWidth / 3)) > (Tileset.GetLength(1) * getTileScale() * 16) - screenWidth)
-                return (Tileset.GetLength(1) * getTileScale() * 16) - screenWidth;
+                return ((Tileset.GetLength(1) * getTileScale() * 16) - screenWidth);
             return (hero.Position.X - (screenWidth / 3));
         }
     }

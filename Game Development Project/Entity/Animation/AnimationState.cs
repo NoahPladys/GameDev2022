@@ -9,7 +9,6 @@ namespace GameDevelopmentProject.Entity.Animation
     public enum AnimationState
     {
         idle,
-        walking,
         running,
         jumping,
         falling
