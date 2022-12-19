@@ -26,9 +26,13 @@ namespace GameDevelopmentProject.Levels
         private readonly int tilesetHeight = 16;
         public Hero Hero;
 
-        public Level(ContentManager content, char[,] tileSet, Hero hero)
+        public Level(ContentManager content, char[,] tileSet, Rectangle tileBoundingBox, Hero hero)
         {
-            Tileset = TilesetFactory.GenerateTileSet(tileSet, content.Load<Texture2D>("Sprites/Tileset/Grass/grass_tileset"), this.getTileScale());
+            Tileset = TilesetFactory.GenerateTileSet(
+                tileSet,
+                content.Load<Texture2D>("Sprites/Tileset/Grass/grass_tileset"),
+                this.getTileScale(),
+                tileBoundingBox);
             background = content.Load<Texture2D>("Sprites/Tileset/Grass/sky");
             backgroundObject = content.Load<Texture2D>("Sprites/Tileset/Grass/background_trees");
             Hero = hero;
@@ -89,7 +93,7 @@ namespace GameDevelopmentProject.Levels
                     if (currentTile != null)
                         spriteBatch.Draw(
                             currentTile.Texture,
-                            currentTile.Position - new Vector2(cameraHorizontalOffset, 0),
+                            currentTile.Position - new Vector2(cameraHorizontalOffset + currentTile.BoundingBox.X, 0 + currentTile.BoundingBox.Y),
                             currentTile.SourceRectangle,
                             Color.White, 
                             0,
@@ -150,7 +154,6 @@ namespace GameDevelopmentProject.Levels
 
         private float getCameraHorizontalOffset(Hero hero)
         {
-            Debug.WriteLine(this.Tileset.GetLength(1));
             int screenWidth = ScreenSizeManager.getInstance().WindowWidth;
             if (hero.Position.X < (screenWidth / 3))
                 return 0;

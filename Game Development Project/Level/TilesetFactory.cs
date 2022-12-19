@@ -17,7 +17,7 @@ namespace GameDevelopmentProject.Levels
     public class TilesetFactory
     {
         private static int _tilesetHeight = 16;
-        public static Tile[,] GenerateTileSet(char[,] tilesetChar, Texture2D texture, float tileScale)
+        public static Tile[,] GenerateTileSet(char[,] tilesetChar, Texture2D texture, float tileScale, Rectangle boundingBox)
         {
             if (tilesetChar.GetLength(0) == _tilesetHeight)
             {
@@ -49,7 +49,19 @@ namespace GameDevelopmentProject.Levels
                                         height++;
                                         k++;
                                     }
-                                    drawSquare(tileset, texture, j, i, width, height, tileScale);
+                                    drawSquare(
+                                        tileset, 
+                                        texture, 
+                                        j, 
+                                        i, 
+                                        width, 
+                                        height, 
+                                        tileScale, 
+                                        new Rectangle(
+                                            (int)Math.Round(boundingBox.X * tileScale),
+                                            (int)Math.Round(boundingBox.Y * tileScale),
+                                            (int)Math.Round(boundingBox.Width * tileScale),
+                                            (int)Math.Round(boundingBox.Height * tileScale)));
                                 }
                             }
                         }
@@ -60,7 +72,7 @@ namespace GameDevelopmentProject.Levels
             return null;
         }
 
-        private static void drawSquare(Tile[,] tileset, Texture2D texture, int posX, int posY, int width, int height, float scale)
+        private static void drawSquare(Tile[,] tileset, Texture2D texture, int posX, int posY, int width, int height, float scale, Rectangle boundingBox)
         {
             for (int y = posY; y < posY + height; y++)
             {
@@ -101,7 +113,7 @@ namespace GameDevelopmentProject.Levels
                         else
                             texturePosX = 16;
                     }
-                    tileset[y,x] = new Tile(texture, new Rectangle(texturePosX, texturePosY, 16, 16), new Vector2(x*16*scale, y*16*scale));
+                    tileset[y,x] = new Tile(texture, new Rectangle(texturePosX, texturePosY, 16, 16), new Vector2(x*16*scale, y*16*scale), boundingBox);
                 }
             }
         }

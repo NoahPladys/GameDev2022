@@ -10,5 +10,6 @@ namespace GameDevelopmentProject.Interfaces
     internal interface ICollidable
     {
         public Rectangle BoundingBox { get; }
+        public Rectangle RelativeBoundingBox { get; }
     }
 }

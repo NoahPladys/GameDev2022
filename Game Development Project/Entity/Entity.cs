@@ -27,13 +27,12 @@ namespace GameDevelopmentProject.Entity
         public Rectangle RelativeBoundingBox { 
             get 
             { 
-                Rectangle boundingBox = AnimationManager.GetDirectionalBoundingBox();
+                Rectangle boundingBox = BoundingBox;
                 return new Rectangle(
-                    (int)Position.X - boundingBox.X,
-                    (int)Position.Y - boundingBox.Y,
+                    (int)Math.Round(Position.X),
+                    (int)Math.Round(Position.Y),
                     boundingBox.Width,
-                    boundingBox.Height
-                    );
+                    boundingBox.Height);
             } 
         }
         public IInputReader InputReader { get; set; }
