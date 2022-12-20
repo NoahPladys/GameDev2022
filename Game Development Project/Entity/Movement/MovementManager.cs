@@ -56,10 +56,8 @@ namespace GameDevelopmentProject.Entity.Movement
                     float boundRight = level.Tileset.GetLength(1) * level.getTileScale() * 16 - collidable.BoundingBox.Width;
                     if (movable.Position.X < boundLeft)
                         intersection = true;
-                    //movable.Position = new Vector2(boundLeft, movable.Position.Y);
                     else if (movable.Position.X > boundRight)
                         intersection = true;
-                        //movable.Position = new Vector2(boundRight, movable.Position.Y);
 
                     //CHECK FOR TILE COLLISION
                     for (int y=0; y < level.Tileset.GetLength(0); y++)

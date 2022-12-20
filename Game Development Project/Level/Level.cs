@@ -110,7 +110,7 @@ namespace GameDevelopmentProject.Levels
 
         private float getBackgroundScale()
         {
-            return ((float)ScreenSizeManager.getInstance().WindowHeight / background.Height) * (this.getLowestTileHeight() / tilesetHeight);
+            return ((float)ScreenSizeManager.getInstance().WindowHeight / background.Height) * (getLowestTileHeight() / (float)tilesetHeight);
         }
 
         private float getBackgroundScaleObject()
@@ -125,21 +125,14 @@ namespace GameDevelopmentProject.Levels
 
         private int getLowestTileHeight()
         {
-            for (int y = 0; y < Tileset.GetLength(0); y++)
+            int lowestTile = 0;
+            for (int x = 0; x < Tileset.GetLength(1); x++)
             {
-                bool foundAir = false;
-                int x = 0;
-                while (!foundAir && x < Tileset.GetLength(1))
-                {
-                    if (this.Tileset[y, x] == null)
-                        foundAir = true;
-                    x++;
-                }
-
-                if (!foundAir)
-                    return y;
+                int lowestTileAtX = getLowestTileHeight(x);
+                if (lowestTileAtX > lowestTile)
+                    lowestTile = lowestTileAtX;
             }
-            return Tileset.GetLength(0);
+            return lowestTile;
         }
 
         private int getLowestTileHeight(int x)
