@@ -37,8 +37,8 @@ namespace GameDevelopmentProject.Levels
             backgroundObject = content.Load<Texture2D>("Sprites/Tileset/Grass/background_trees");
             Hero = hero;
             Hero.Position = new Vector2(
-                Tileset[11, 2].Position.X,
-                Tileset[11, 2].Position.Y - Hero.BoundingBox.Height);
+                Tileset[getLowestTileHeight(2), 2].Position.X,
+                Tileset[getLowestTileHeight(2), 2].Position.Y - Hero.BoundingBox.Height);
         }
 
         public void Update(GameTime gameTime, Level level = null)

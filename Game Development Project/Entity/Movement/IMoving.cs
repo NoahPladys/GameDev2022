@@ -13,10 +13,10 @@ namespace GameDevelopmentProject.Entity.Movement
     {
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
-        public bool IsFalling { get; set; }
-        public Vector2 CurrentForce { get; set; }
         public Vector2 JumpingForce { get; set; }
-        public Vector2 GravityForce { get; set; }
+        public float GravityForce { get; set; }
+        public float CurrentGravityForce { get; set; }
+        public float MaxGravityForce { get; set; }
         public IInputReader InputReader { get; set; }
         public MovementManager MovementManager { get; set; }
     }

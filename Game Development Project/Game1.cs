@@ -47,10 +47,10 @@ namespace GameDevelopmentProject
         private void InitializeGameObjects()
         {
             _hero = new Hero(new KeyboardReader(), 250f);
-            _hero.AnimationManager.AddAnimation(AnimationState.running, Content.Load<Texture2D>("Sprites/Hero/Light/Run"), 120, 80, new Rectangle(43,43,27,37), new Rectangle(50,43,27,37));
-            _hero.AnimationManager.AddAnimation(AnimationState.idle, Content.Load<Texture2D>("Sprites/Hero/Light/Idle"), 120, 80, new Rectangle(45,43,19,37), new Rectangle(53,43,19,37));
+            _hero.AnimationManager.AddAnimation(AnimationState.running, Content.Load<Texture2D>("Sprites/Hero/Light/Run"), 120, 80, new Rectangle(48,43,18,37), new Rectangle(54,43,18,37));
+            _hero.AnimationManager.AddAnimation(AnimationState.idle, Content.Load<Texture2D>("Sprites/Hero/Light/Idle"), 120, 80, new Rectangle(47,43,18,37), new Rectangle(55,43,18,37));
             _hero.AnimationManager.CurrentAnimationState = AnimationState.idle;
-            _hero.AnimationManager.AnimationScale = 2f;
+            _hero.AnimationManager.AnimationScale = 2.25f;
 
             _level = new Level(Content, new char[,] {
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },

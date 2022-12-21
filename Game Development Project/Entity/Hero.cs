@@ -30,7 +30,8 @@ namespace GameDevelopmentProject.Entity
             InputReader = inputReader;
             Position = new Vector2(0, 0);
             Speed = new Vector2(speed, 0);
-            IsFalling = false;
+            GravityForce = 30;
+            MaxGravityForce = 800;
         }
 
         override public void Update(GameTime gameTime, Level level)

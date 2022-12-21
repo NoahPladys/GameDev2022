@@ -1,6 +1,7 @@
 ﻿using GameDevelopmentProject.Entity.Animation;
 using GameDevelopmentProject.Interfaces;
 using GameDevelopmentProject.Levels;
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct2D1.Effects;
@@ -19,64 +20,91 @@ namespace GameDevelopmentProject.Entity.Movement
     {
         internal void Move(IMoving movable, Level level, GameTime gameTime)
         {
-            var direction = movable.InputReader.ReadInput();
-            if (movable.InputReader.IsDestinationInput)
+            Vector2 direction = movable.InputReader.ReadInput();
+            float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.getInstance().GetScale();
+            Vector2 distance = direction * (movable.Speed * scale);
+            Vector2 nextPosition = movable.Position + distance;
+            Vector2 previousPosition;
+
+            IAnimatable animatable = null;
+            if (movable is IAnimatable)
+                animatable = (IAnimatable)movable;
+
+            ICollidable collidable = null;
+            if (movable is ICollidable)
+                collidable = (ICollidable)movable;
+
+            //GRAVITY FORCE
+            if (movable.GravityForce != 0)
             {
-                direction -= movable.Position;
-                direction.Normalize();
+                movable.CurrentGravityForce += movable.GravityForce;
+                if (movable.CurrentGravityForce > movable.MaxGravityForce)
+                    movable.CurrentGravityForce = movable.MaxGravityForce;
+
+                nextPosition += new Vector2(0, movable.CurrentGravityForce * scale);
             }
 
-            var distance = direction * (movable.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-            var nextPosition = movable.Position + distance * ScreenSizeManager.getInstance().GetScale();
-
-            if(nextPosition != movable.Position)
+            if (nextPosition != movable.Position)
             {
-                //CHANGE ANIMATION OF MOVABLE IS ANIMATIBLE
-                if (movable is IAnimatable)
+                //CHANGE ANIMATION IF MOVABLE IS ANIMATIBLE
+                if (animatable != null)
                 {
-                    ((IAnimatable)movable).AnimationManager.CurrentAnimationState = AnimationState.running;
-                    if (nextPosition.X > movable.Position.X)
-                        ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.None;
-                    else
-                        ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.FlipHorizontally;
-
+                    if(nextPosition.X != movable.Position.X)
+                    {
+                        ((IAnimatable)movable).AnimationManager.CurrentAnimationState = AnimationState.running;
+                        if (nextPosition.X > movable.Position.X)
+                            ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.None;
+                        else if (nextPosition.X < movable.Position.X)
+                            ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.FlipHorizontally;
+                    } 
                 }
 
-                Vector2 previousPosition = movable.Position;
-                movable.Position = nextPosition; //MOVE TO NEXT POSITION
-
                 //CHECK IF MOVABLE IS COLLIDABLE
-                if (movable is ICollidable)
+                if (collidable != null)
                 {
-                    ICollidable collidable = (ICollidable)movable;
-
-                    bool intersection = false;
-                    //KEEP MOVABLE IN LEVEL BOUNDS
-                    float boundLeft = 0;
-                    float boundRight = level.Tileset.GetLength(1) * level.getTileScale() * 16 - collidable.BoundingBox.Width;
-                    if (movable.Position.X < boundLeft)
-                        intersection = true;
-                    else if (movable.Position.X > boundRight)
-                        intersection = true;
-
-                    //CHECK FOR TILE COLLISION
-                    for (int y=0; y < level.Tileset.GetLength(0); y++)
+                    //CHECK FOR COLLISION ON X MOVE
+                    if (nextPosition.X != movable.Position.X)
                     {
-                        for(int x=0; x<level.Tileset.GetLength(1); x++)
+                        previousPosition = movable.Position;
+
+                        //CHECK IF MOVABLE IS STILL IN BOUNDS
+                        movable.Position = nextPosition;
+                        bool outOfBounds = false;
+                        float boundLeft = 0;
+                        float boundRight = level.Tileset.GetLength(1) * level.getTileScale() * 16 - collidable.BoundingBox.Width;
+                        if (movable.Position.X < boundLeft || movable.Position.X > boundRight)
+                            outOfBounds = true;
+                        movable.Position = previousPosition;
+
+                        if (!outOfBounds)
                         {
-                            Tile currentTile = level.Tileset[y, x];
-                            if(currentTile != null)
+                            previousPosition = movable.Position;
+                            movable.Position = new Vector2(nextPosition.X, previousPosition.Y);
+                            foreach (Tile currentTile in level.Tileset)
                             {
-                                if (collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
+                                if (currentTile != null && collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
                                 {
-                                    intersection = true;
+                                    movable.Position = previousPosition;
+                                    break;
                                 }
                             }
                         }
                     }
-                    if (intersection)
+
+                    //CHECK FOR COLLISION ON Y MOVE
+                    if (nextPosition.Y != movable.Position.Y)
                     {
-                        movable.Position = previousPosition;
+                        previousPosition = movable.Position;
+                        movable.Position = new Vector2(movable.Position.X, nextPosition.Y);
+                        foreach (Tile currentTile in level.Tileset)
+                        {
+                            if (currentTile != null && collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
+                            {
+                                movable.Position = previousPosition;
+                                movable.CurrentGravityForce = 0;
+                                break;
+                            }
+                        }
                     }
                 }
                 else
