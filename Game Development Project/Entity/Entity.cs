@@ -18,11 +18,15 @@ namespace GameDevelopmentProject.Entity
     {
         public AnimationManager AnimationManager { get; set; }
         public Vector2 Position { get; set; }
-        public Vector2 Speed { get; set; }
-        public Vector2 JumpingForce { get; set; }
+        public float Speed { get; set; }
         public float GravityForce { get; set; }
         public float CurrentGravityForce { get; set; }
         public float MaxGravityForce { get; set; }
+        public float JumpForce { get; set; }
+        public float MaxJumpForce { get; set; }
+        public float CurrentJumpForceDecrease { get; set; }
+        public float JumpForceDecrease { get; set; }
+        public bool CanJump { get; set; } = true;
         public Rectangle BoundingBox { get { return AnimationManager.GetDirectionalBoundingBox(); } }
         public Rectangle RelativeBoundingBox { 
             get 

@@ -24,6 +24,10 @@ namespace GameDevelopmentProject.Entity.Controls
             {
                 direction.X += 1;
             }
+            if (state.IsKeyDown(Keys.Up) || state.IsKeyDown(Keys.Z) || state.IsKeyDown(Keys.Space))
+            {
+                direction.Y -= 1;
+            }
             return direction;
         }
     }

@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Tile = GameDevelopmentProject.Levels.Tile;
 
 namespace GameDevelopmentProject.Entity.Movement
@@ -22,8 +23,7 @@ namespace GameDevelopmentProject.Entity.Movement
         {
             Vector2 direction = movable.InputReader.ReadInput();
             float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.getInstance().GetScale();
-            Vector2 distance = direction * (movable.Speed * scale);
-            Vector2 nextPosition = movable.Position + distance;
+            Vector2 distance = new Vector2(direction.X * (movable.Speed * scale), 0);
             Vector2 previousPosition;
 
             IAnimatable animatable = null;
@@ -34,13 +34,34 @@ namespace GameDevelopmentProject.Entity.Movement
             if (movable is ICollidable)
                 collidable = (ICollidable)movable;
 
+            //JUMP FORCE
+            if(direction.Y != 0 && movable.CanJump)
+            {
+                //movable.CurrentJumpForce += movable.JumpForce - movable.CurrentJumpForceDecrease;
+                distance.Y += direction.Y * ((movable.JumpForce - movable.CurrentJumpForceDecrease) * scale);
+                if(movable.CurrentJumpForceDecrease >= movable.MaxJumpForce)
+                {
+                    movable.CurrentJumpForceDecrease = movable.MaxJumpForce;
+                    distance.Y = 0;
+                    movable.CanJump = false;
+                }
+                movable.CurrentJumpForceDecrease += movable.JumpForceDecrease;
+            }
+            else
+            {
+                movable.CurrentJumpForceDecrease = 0;
+                movable.CanJump = false;
+            }
+
+            Vector2 nextPosition = movable.Position + distance;
+
             //GRAVITY FORCE
-            if (movable.GravityForce != 0)
+            if (movable.GravityForce != 0 && distance.Y == 0)
             {
                 movable.CurrentGravityForce += movable.GravityForce;
                 if (movable.CurrentGravityForce > movable.MaxGravityForce)
                     movable.CurrentGravityForce = movable.MaxGravityForce;
-
+                
                 nextPosition += new Vector2(0, movable.CurrentGravityForce * scale);
             }
 
@@ -102,6 +123,7 @@ namespace GameDevelopmentProject.Entity.Movement
                             {
                                 movable.Position = previousPosition;
                                 movable.CurrentGravityForce = 0;
+                                if (direction.Y == 0) movable.CanJump = true;
                                 break;
                             }
                         }

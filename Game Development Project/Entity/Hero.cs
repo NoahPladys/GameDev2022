@@ -29,9 +29,12 @@ namespace GameDevelopmentProject.Entity
             MovementManager = new MovementManager();
             InputReader = inputReader;
             Position = new Vector2(0, 0);
-            Speed = new Vector2(speed, 0);
+            Speed = speed;
             GravityForce = 30;
             MaxGravityForce = 800;
+            JumpForce = 800;
+            JumpForceDecrease = 25;
+            MaxJumpForce = 650;
         }
 
         override public void Update(GameTime gameTime, Level level)
