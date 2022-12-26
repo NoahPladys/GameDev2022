@@ -12,19 +12,21 @@ namespace GameDevelopmentProject.Entity.Animation
     public class Animations
     {
         public AnimationFrame CurrentFrame { get; set; }
-        //public bool loopAnimation { get; }
+        public bool IsLoopAnimation { get; }
         public Texture2D Texture { get; }
         public Rectangle BoundingBox { get; }
         public Rectangle ReverseBoundingBox { get; }
+        public int Counter { get; set; }
         private List<AnimationFrame> _frames;
-        private int _counter;
         private double _timeSinceLastFrame;
 
-        public Animations(Texture2D texture, Rectangle boundingBox, Rectangle reverseBoundingBox)
+        public Animations(Texture2D texture, bool loopAnimation, Rectangle boundingBox, Rectangle reverseBoundingBox)
         {
             _frames = new List<AnimationFrame>();
             Texture = texture;
+            IsLoopAnimation = loopAnimation;
             _timeSinceLastFrame = 0;
+            Counter = 0;
             BoundingBox = boundingBox;
             ReverseBoundingBox = reverseBoundingBox;
         }
@@ -45,16 +47,20 @@ namespace GameDevelopmentProject.Entity.Animation
 
         public void Update(GameTime gameTime)
         {
-            CurrentFrame = _frames[_counter];
+            CurrentFrame = _frames[Counter];
 
             _timeSinceLastFrame += gameTime.ElapsedGameTime.TotalSeconds;
             int fps = 10;
 
             if (_timeSinceLastFrame >= 1d / fps)
             {
-                _counter++;
-                if (_counter >= _frames.Count)
-                    _counter = 0;
+                if (Counter == _frames.Count - 1)
+                {
+                    if (IsLoopAnimation)
+                        Counter = 0;
+                }
+                else
+                    Counter++;
                 _timeSinceLastFrame = 0;
             }
         }

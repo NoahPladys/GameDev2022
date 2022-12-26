@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GameDevelopmentProject.Entity
 {
-    public abstract class Entity: IGameObject, IMoving, IAnimatable, ICollidable
+    public abstract class Entity: IGameObject, IMovable, IAnimatable, ICollidable, IJumpable
     {
         public AnimationManager AnimationManager { get; set; }
         public Vector2 Position { get; set; }
@@ -44,7 +44,6 @@ namespace GameDevelopmentProject.Entity
 
         virtual public void Update(GameTime gameTime, Level level)
         {
-            AnimationManager.CurrentAnimationState = AnimationManager.DefaultAnimationState;
             MovementManager.Move(this, level, gameTime);
             AnimationManager.CurrentAnimation.Update(gameTime);
         }

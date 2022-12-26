@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,12 +20,14 @@ namespace GameDevelopmentProject.Entity.Movement
 {
     public class MovementManager
     {
-        internal void Move(IMoving movable, Level level, GameTime gameTime)
+        internal void Move(IMovable movable, Level level, GameTime gameTime)
         {
             Vector2 direction = movable.InputReader.ReadInput();
             float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.getInstance().GetScale();
             Vector2 distance = new Vector2(direction.X * (movable.Speed * scale), 0);
             Vector2 previousPosition;
+            Vector2 startPosition = movable.Position;
+            Vector2 nextPosition = movable.Position + distance;
 
             IAnimatable animatable = null;
             if (movable is IAnimatable)
@@ -34,52 +37,44 @@ namespace GameDevelopmentProject.Entity.Movement
             if (movable is ICollidable)
                 collidable = (ICollidable)movable;
 
+            IJumpable jumpable = null;
+            if (movable is IJumpable)
+                jumpable = (IJumpable)movable;
+
             //JUMP FORCE
-            if(direction.Y != 0 && movable.CanJump)
+            if (jumpable != null)
             {
-                //movable.CurrentJumpForce += movable.JumpForce - movable.CurrentJumpForceDecrease;
-                distance.Y += direction.Y * ((movable.JumpForce - movable.CurrentJumpForceDecrease) * scale);
-                if(movable.CurrentJumpForceDecrease >= movable.MaxJumpForce)
+                if (direction.Y != 0 && jumpable.CanJump)
                 {
-                    movable.CurrentJumpForceDecrease = movable.MaxJumpForce;
-                    distance.Y = 0;
-                    movable.CanJump = false;
+                    distance.Y += direction.Y * ((jumpable.JumpForce - jumpable.CurrentJumpForceDecrease) * scale);
+                    if (jumpable.CurrentJumpForceDecrease >= jumpable.MaxJumpForce)
+                    {
+                        jumpable.CurrentJumpForceDecrease = jumpable.MaxJumpForce;
+                        jumpable.CanJump = false;
+                    }
+                    jumpable.CurrentJumpForceDecrease += jumpable.JumpForceDecrease;
                 }
-                movable.CurrentJumpForceDecrease += movable.JumpForceDecrease;
-            }
-            else
-            {
-                movable.CurrentJumpForceDecrease = 0;
-                movable.CanJump = false;
-            }
+                else
+                {
+                    jumpable.CurrentJumpForceDecrease = 0;
+                    jumpable.CanJump = false;
+                }
 
-            Vector2 nextPosition = movable.Position + distance;
+                nextPosition = movable.Position + distance;
 
-            //GRAVITY FORCE
-            if (movable.GravityForce != 0 && distance.Y == 0)
-            {
-                movable.CurrentGravityForce += movable.GravityForce;
-                if (movable.CurrentGravityForce > movable.MaxGravityForce)
-                    movable.CurrentGravityForce = movable.MaxGravityForce;
-                
-                nextPosition += new Vector2(0, movable.CurrentGravityForce * scale);
+                //GRAVITY FORCE
+                if (jumpable.GravityForce != 0 && distance.Y == 0)
+                {
+                    jumpable.CurrentGravityForce += jumpable.GravityForce;
+                    if (jumpable.CurrentGravityForce > jumpable.MaxGravityForce)
+                        jumpable.CurrentGravityForce = jumpable.MaxGravityForce;
+
+                    nextPosition += new Vector2(0, jumpable.CurrentGravityForce * scale);
+                }
             }
 
             if (nextPosition != movable.Position)
             {
-                //CHANGE ANIMATION IF MOVABLE IS ANIMATIBLE
-                if (animatable != null)
-                {
-                    if(nextPosition.X != movable.Position.X)
-                    {
-                        ((IAnimatable)movable).AnimationManager.CurrentAnimationState = AnimationState.running;
-                        if (nextPosition.X > movable.Position.X)
-                            ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.None;
-                        else if (nextPosition.X < movable.Position.X)
-                            ((IAnimatable)movable).AnimationManager.SpriteEffect = SpriteEffects.FlipHorizontally;
-                    } 
-                }
-
                 //CHECK IF MOVABLE IS COLLIDABLE
                 if (collidable != null)
                 {
@@ -101,13 +96,9 @@ namespace GameDevelopmentProject.Entity.Movement
                         {
                             previousPosition = movable.Position;
                             movable.Position = new Vector2(nextPosition.X, previousPosition.Y);
-                            foreach (Tile currentTile in level.Tileset)
+                            if (collision(collidable, level))
                             {
-                                if (currentTile != null && collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
-                                {
-                                    movable.Position = previousPosition;
-                                    break;
-                                }
+                                movable.Position = previousPosition;
                             }
                         }
                     }
@@ -117,14 +108,23 @@ namespace GameDevelopmentProject.Entity.Movement
                     {
                         previousPosition = movable.Position;
                         movable.Position = new Vector2(movable.Position.X, nextPosition.Y);
-                        foreach (Tile currentTile in level.Tileset)
+                        if (collision(collidable, level))
                         {
-                            if (currentTile != null && collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
+                            if(movable.Position.Y > previousPosition.Y)
                             {
                                 movable.Position = previousPosition;
-                                movable.CurrentGravityForce = 0;
-                                if (direction.Y == 0) movable.CanJump = true;
-                                break;
+                                do
+                                {
+                                    previousPosition = movable.Position;
+                                    movable.Position += new Vector2(0, 2f);
+                                } while (!collision(collidable, level));
+                            }
+                            movable.Position = previousPosition;
+
+                            if (jumpable != null)
+                            {
+                                jumpable.CurrentGravityForce = jumpable.GravityForce;
+                                if (direction.Y == 0) jumpable.CanJump = true;
                             }
                         }
                     }
@@ -133,7 +133,26 @@ namespace GameDevelopmentProject.Entity.Movement
                 {
                     movable.Position = nextPosition; //MOVE TO NEXT POSITION
                 }
+
+                //SET ANIMATION IF ANIMATABLE
+                if (animatable != null)
+                {
+                    Vector2 animationvector = movable.Position - startPosition;
+                    animatable.AnimationManager.SetAnimation(animationvector);
+                }
             }
+        }
+
+        private bool collision(ICollidable collidable, Level level)
+        {
+            foreach (Tile currentTile in level.Tileset)
+            {
+                if (currentTile != null && collidable.RelativeBoundingBox.Intersects(currentTile.RelativeBoundingBox))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

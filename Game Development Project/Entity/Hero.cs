@@ -30,7 +30,7 @@ namespace GameDevelopmentProject.Entity
             InputReader = inputReader;
             Position = new Vector2(0, 0);
             Speed = speed;
-            GravityForce = 30;
+            GravityForce = 25;
             MaxGravityForce = 800;
             JumpForce = 800;
             JumpForceDecrease = 25;
