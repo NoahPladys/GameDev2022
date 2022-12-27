@@ -1,5 +1,6 @@
 ﻿using GameDevelopmentProject.Entity;
 using GameDevelopmentProject.Entity.Animation;
+using GameDevelopmentProject.Entity.Controls;
 using GameDevelopmentProject.Interfaces;
 using GameDevelopmentProject.Levels;
 using Microsoft.Xna.Framework;
@@ -21,20 +22,21 @@ namespace GameDevelopmentProject.Levels
     public class Level : IGameObject
     {
         public Tile[,] Tileset;
-        public Texture2D background;
-        public Texture2D backgroundObject;
+        public Texture2D Background;
+        public Texture2D BackgroundObject;
         private readonly int tilesetHeight = 16;
         public Hero Hero;
+        public List<Hostile> Hostiles = new List<Hostile>();
 
-        public Level(ContentManager content, char[,] tileSet, Rectangle tileBoundingBox, Hero hero)
+        public Level(char[,] tileSet, Rectangle tileBoundingBox, Hero hero, Texture2D tilesetTexture, Texture2D backgroundTexture, Texture2D backgroundObjectTexture = null)
         {
             Tileset = TilesetFactory.GenerateTileSet(
                 tileSet,
-                content.Load<Texture2D>("Sprites/Tileset/Grass/grass_tileset"),
+                tilesetTexture,
                 this.getTileScale(),
                 tileBoundingBox);
-            background = content.Load<Texture2D>("Sprites/Tileset/Grass/sky");
-            backgroundObject = content.Load<Texture2D>("Sprites/Tileset/Grass/background_trees");
+            Background = backgroundTexture;
+            BackgroundObject = backgroundObjectTexture;
             Hero = hero;
             Hero.Position = new Vector2(
                 Tileset[getLowestTileHeight(2), 2].Position.X,
@@ -44,6 +46,7 @@ namespace GameDevelopmentProject.Levels
         public void Update(GameTime gameTime, Level level = null)
         {
             Hero.Update(gameTime, this);
+            Hostiles.ForEach(e => e.Update(gameTime, this));
         }
 
         public void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0)
@@ -55,11 +58,11 @@ namespace GameDevelopmentProject.Levels
             cameraHorizontalOffset = getCameraHorizontalOffset(Hero);
 
             //DRAW BACKGROUND
-            for (int i=0; i<Math.Round(Math.Floor((decimal)ScreenSizeManager.getInstance().WindowWidth / background.Width))+1; i++)
+            for (int i=0; i<Math.Round(Math.Floor((decimal)ScreenSizeManager.getInstance().WindowWidth / Background.Width))+1; i++)
                 spriteBatch.Draw(
-                    background,
-                    new Vector2(background.Width*this.getBackgroundScale() * i, 0),
-                    new Rectangle(0, 0, background.Width, background.Height),
+                    Background,
+                    new Vector2(Background.Width*this.getBackgroundScale() * i, 0),
+                    new Rectangle(0, 0, Background.Width, Background.Height),
                     Color.White,
                     0,
                     new Vector2(0, 0),
@@ -68,14 +71,14 @@ namespace GameDevelopmentProject.Levels
                     0);
 
             //DRAW BACKGROUND OBJECTS
-            if(backgroundObject != null)
+            if(BackgroundObject != null)
             {
-                for (int i = 0; i < Math.Round(Math.Floor((decimal)ScreenSizeManager.getInstance().WindowWidth / backgroundObject.Width)) + 1; i++)
+                for (int i = 0; i < Math.Round(Math.Floor((decimal)ScreenSizeManager.getInstance().WindowWidth / BackgroundObject.Width)) + 1; i++)
                     spriteBatch.Draw(
-                        backgroundObject,
-                        new Vector2((backgroundObject.Width * i * backgroundObjectScale) - cameraHorizontalOffset / 6,
-                        (lowestTileHeight * tileScale * 16) - (backgroundObject.Height * backgroundObjectScale)),
-                        new Rectangle(0, 0, backgroundObject.Width, backgroundObject.Height),
+                        BackgroundObject,
+                        new Vector2((BackgroundObject.Width * i * backgroundObjectScale) - cameraHorizontalOffset / 6,
+                        (lowestTileHeight * tileScale * 16) - (BackgroundObject.Height * backgroundObjectScale)),
+                        new Rectangle(0, 0, BackgroundObject.Width, BackgroundObject.Height),
                         Color.White,
                         0,
                         new Vector2(0, 0),
@@ -106,16 +109,21 @@ namespace GameDevelopmentProject.Levels
 
             //DRAW HERO
             Hero.Draw(spriteBatch, cameraHorizontalOffset);
+
+            //DRAW HOSTILES
+            Hostiles.ForEach(e => {
+                e.Draw(spriteBatch, cameraHorizontalOffset);
+                });
         }
 
         private float getBackgroundScale()
         {
-            return ((float)ScreenSizeManager.getInstance().WindowHeight / background.Height) * (getLowestTileHeight() / (float)tilesetHeight);
+            return ((float)ScreenSizeManager.getInstance().WindowHeight / Background.Height) * (getLowestTileHeight() / (float)tilesetHeight);
         }
 
         private float getBackgroundScaleObject()
         {
-            return ((float)ScreenSizeManager.getInstance().WindowHeight / background.Height) * 1.5f;
+            return ((float)ScreenSizeManager.getInstance().WindowHeight / Background.Height) * 1.5f;
         }
 
         public float getTileScale()

@@ -24,8 +24,8 @@ namespace GameDevelopmentProject.Entity
         public float MaxGravityForce { get; set; }
         public float JumpForce { get; set; }
         public float MaxJumpForce { get; set; }
-        public float CurrentJumpForceDecrease { get; set; }
         public float JumpForceDecrease { get; set; }
+        public float CurrentJumpForceDecrease { get; set; }
         public bool CanJump { get; set; } = true;
         public Rectangle BoundingBox { get { return AnimationManager.GetDirectionalBoundingBox(); } }
         public Rectangle RelativeBoundingBox { 

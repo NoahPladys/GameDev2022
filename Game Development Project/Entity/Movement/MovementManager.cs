@@ -44,7 +44,7 @@ namespace GameDevelopmentProject.Entity.Movement
             //JUMP FORCE
             if (jumpable != null)
             {
-                if (direction.Y != 0 && jumpable.CanJump)
+                if (direction.Y < 0 && jumpable.CanJump)
                 {
                     distance.Y += direction.Y * ((jumpable.JumpForce - jumpable.CurrentJumpForceDecrease) * scale);
                     if (jumpable.CurrentJumpForceDecrease >= jumpable.MaxJumpForce)
@@ -124,7 +124,13 @@ namespace GameDevelopmentProject.Entity.Movement
                             if (jumpable != null)
                             {
                                 jumpable.CurrentGravityForce = jumpable.GravityForce;
-                                if (direction.Y == 0) jumpable.CanJump = true;
+                                if(jumpable is Hero)
+                                {
+                                    if(direction.Y == 0)
+                                        jumpable.CanJump = true;
+                                }
+                                else
+                                    jumpable.CanJump = true;
                             }
                         }
                     }

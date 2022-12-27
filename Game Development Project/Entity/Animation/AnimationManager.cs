@@ -26,7 +26,7 @@ namespace GameDevelopmentProject.Entity.Animation
         public Animations CurrentAnimation;
         public AnimationState DefaultAnimationState;
         public SpriteEffects SpriteEffect;  
-        public float AnimationScale;
+        public float AnimationScale = 1;
 
         public AnimationManager(AnimationState defaultAnimationState = AnimationState.idle)
         {

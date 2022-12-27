@@ -20,21 +20,22 @@ namespace GameDevelopmentProject.Entity
 {
     public class Hero : Entity
     {
-        public Hero(IInputReader inputReader, float speed)
+        public Hero(float speed)
         {
             //INITIALIZE ANIMATIONS
             AnimationManager = new AnimationManager();
 
             //INITIALIZE MOVEMENT
             MovementManager = new MovementManager();
-            InputReader = inputReader;
+            InputReader = new KeyboardReader();
             Position = new Vector2(0, 0);
             Speed = speed;
+
             GravityForce = 25;
             MaxGravityForce = 800;
             JumpForce = 800;
-            JumpForceDecrease = 25;
             MaxJumpForce = 650;
+            JumpForceDecrease = 25;
         }
 
         override public void Update(GameTime gameTime, Level level)
