@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GameDevelopmentProject.Entity.Controls
 {
-    internal class SlimeController : IInputReader
+    internal class JumpMoveWithDelayControl : IInputReader
     {
         public bool IsDestinationInput => false;
 
@@ -22,7 +22,7 @@ namespace GameDevelopmentProject.Entity.Controls
         private int _direction;
         private bool _jump;
 
-        public SlimeController(Hero hero, Hostile hostile, float range)
+        public JumpMoveWithDelayControl(Hero hero, Hostile hostile, float range)
         {
             _hero = hero;
             _hostile = hostile;

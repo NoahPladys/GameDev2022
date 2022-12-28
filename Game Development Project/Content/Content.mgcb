@@ -61,7 +61,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Hero/Light/Run.png
 
-#begin Sprites/Hostiles/Mushroom/Mushroom attack.png
+#begin Sprites/Hostiles/Mushroom/idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Hostiles/Mushroom/Mushroom attack.png
+/build:Sprites/Hostiles/Mushroom/idle.png
 
-#begin Sprites/Hostiles/Mushroom/mushroom projectile.png
+#begin Sprites/Hostiles/Mushroom/running.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -83,19 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Hostiles/Mushroom/mushroom projectile.png
-
-#begin Sprites/Hostiles/Mushroom/Mushroom.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Hostiles/Mushroom/Mushroom.png
+/build:Sprites/Hostiles/Mushroom/running.png
 
 #begin Sprites/Hostiles/Slime/jump.png
 /importer:TextureImporter
@@ -108,6 +96,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Hostiles/Slime/jump.png
+
+#begin Sprites/Hostiles/Snake/idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Hostiles/Snake/idle.png
 
 #begin Sprites/Tileset/Grass/Background_trees_ (end left).png
 /importer:TextureImporter
@@ -264,4 +264,40 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Tileset/Grass/tree.png
+
+#begin Sprites/Tileset/Sand/background_mountains.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Tileset/Sand/background_mountains.png
+
+#begin Sprites/Tileset/Sand/sand_tileset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Tileset/Sand/sand_tileset.png
+
+#begin Sprites/Tileset/Sand/sky.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Tileset/Sand/sky.png
 
