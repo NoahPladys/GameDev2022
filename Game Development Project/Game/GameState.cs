@@ -8,8 +8,10 @@ namespace GameDevelopmentProject
 {
     public enum GameState
     {
+        Menu,
         Playing,
         Paused,
-        Menu
+        Victory,
+        GameOver
     }
 }

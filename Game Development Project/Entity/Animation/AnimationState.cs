@@ -11,6 +11,9 @@ namespace GameDevelopmentProject.Entity.Animation
         idle,
         running,
         jumping,
-        falling
+        falling,
+        attacking,
+        hit,
+        dead
     }
 }

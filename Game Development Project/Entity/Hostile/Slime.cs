@@ -15,7 +15,7 @@ namespace GameDevelopmentProject.Entity
 {
     internal class Slime : Hostile
     {
-        public Slime(Vector2 startPosition, Hero hero, ContentManager content) : base()
+        public Slime(Vector2 startPosition, Hero hero, ContentManager content) : base(2, 1)
         {
             Position = startPosition;
             Speed = 125f;
@@ -26,10 +26,12 @@ namespace GameDevelopmentProject.Entity
             MaxJumpForce = 220;
 
             this.setInputReader(new JumpMoveWithDelayControl(hero, this, 750f));
-            this.AnimationManager.AddAnimation(AnimationState.running, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), true, 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11));
-            this.AnimationManager.AddAnimation(AnimationState.idle, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), true, 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11));
-            this.AnimationManager.AddAnimation(AnimationState.jumping, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), true, 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11));
-            this.AnimationManager.AddAnimation(AnimationState.falling, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), true, 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11));
+            this.AnimationManager.AddAnimation(AnimationState.running, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), true);
+            this.AnimationManager.AddAnimation(AnimationState.idle, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), true);
+            this.AnimationManager.AddAnimation(AnimationState.jumping, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), true);
+            this.AnimationManager.AddAnimation(AnimationState.falling, content.Load<Texture2D>("Sprites/Hostiles/Slime/Jump"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), true);
+            this.AnimationManager.AddAnimation(AnimationState.hit, content.Load<Texture2D>("Sprites/Hostiles/Slime/Hit"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), false);
+            this.AnimationManager.AddAnimation(AnimationState.dead, content.Load<Texture2D>("Sprites/Hostiles/Slime/Die"), 20, 16, new Rectangle(3, 5, 14, 11), new Rectangle(3, 5, 14, 11), false);
             this.AnimationManager.CurrentAnimationState = AnimationState.idle;
             this.AnimationManager.AnimationScale = 2.5f;
         }

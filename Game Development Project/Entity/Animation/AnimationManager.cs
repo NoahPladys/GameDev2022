@@ -20,7 +20,11 @@ namespace GameDevelopmentProject.Entity.Animation
             set
             {
                 currentAnimationState = value;
+                Animations previousAnimation = CurrentAnimation;
                 CurrentAnimation = Animations[currentAnimationState];
+
+                if (!(CurrentAnimation.IsLoopAnimation) && previousAnimation != CurrentAnimation)
+                    CurrentAnimation.Counter = 0;
             }
         }
         public Animations CurrentAnimation;
@@ -34,9 +38,14 @@ namespace GameDevelopmentProject.Entity.Animation
             Animations = new Dictionary<AnimationState, Animations>();
         }
 
-        public void AddAnimation(AnimationState animationState, Texture2D texture, bool loopAnimation, int frameWidth, int frameHeight, Rectangle boundingBox, Rectangle reverseBoundingBox)
+        public void Update(GameTime gameTime)
         {
-            var animation = new Animations(texture, loopAnimation, boundingBox, reverseBoundingBox);
+            this.CurrentAnimation.Update(gameTime, this);
+        }
+
+        public void AddAnimation(AnimationState animationState, Texture2D texture, int frameWidth, int frameHeight, Rectangle boundingBox, Rectangle reverseBoundingBox, bool loopAnimation, bool stayonlastframe = false)
+        {
+            var animation = new Animations(texture, boundingBox, reverseBoundingBox, loopAnimation);
             animation.AddFrames(frameWidth, frameHeight);
             Animations.Add(animationState, animation);
         }
@@ -58,36 +67,37 @@ namespace GameDevelopmentProject.Entity.Animation
 
         public void SetAnimation(Vector2 direction)
         {
-            if(direction != new Vector2(0))
+            if (CurrentAnimationState != AnimationState.dead && (CurrentAnimation.IsLoopAnimation || (!CurrentAnimation.IsLoopAnimation && CurrentAnimation.Counter == CurrentAnimation.Frames.Count-1)))
             {
-                if (direction.X > 0)
-                    SpriteEffect = SpriteEffects.None;
-                else if (direction.X < 0)
-                    SpriteEffect = SpriteEffects.FlipHorizontally;
-
-                if (direction.Y != 0)
+                if (direction != new Vector2(0))
                 {
-                    if (direction.Y < 0)
-                        CurrentAnimationState = AnimationState.jumping;
-                    else if (direction.Y > 0)
-                        CurrentAnimationState = AnimationState.falling;
-                    return;
-                }
+                    if (direction.X > 0)
+                        SpriteEffect = SpriteEffects.None;
+                    else if (direction.X < 0)
+                        SpriteEffect = SpriteEffects.FlipHorizontally;
 
-                if (direction.X != 0)
-                {
-                    if (currentAnimationState != AnimationState.running)
+                    if (direction.Y != 0)
                     {
-                        CurrentAnimationState = AnimationState.running;
-                        if (!CurrentAnimation.IsLoopAnimation)
-                            CurrentAnimation.Counter = 0;
+                        if (direction.Y < 0)
+                            CurrentAnimationState = AnimationState.jumping;
+                        else if (direction.Y > 0)
+                            CurrentAnimationState = AnimationState.falling;
+                        return;
                     }
-                    return;
+
+                    if (direction.X != 0)
+                    {
+                        if (currentAnimationState != AnimationState.running)
+                        {
+                            CurrentAnimationState = AnimationState.running;
+                        }
+                        return;
+                    }
                 }
-            }
-            else
-            {
-                CurrentAnimationState = AnimationState.idle;
+                else
+                {
+                    CurrentAnimationState = AnimationState.idle;
+                }
             }
         }
     }

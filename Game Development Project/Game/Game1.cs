@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D9;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using Color = Microsoft.Xna.Framework.Color;
@@ -23,9 +24,12 @@ namespace GameDevelopmentProject
         private GraphicsDeviceManager _graphics;
         private ScreenSizeManager _screen;
         private SpriteBatch _spriteBatch;
-        private Hero _hero;
-        private Level _level;
-        private Button[] buttons;
+        public Hero Hero;
+        public Level Level;
+        private Graphic[] _pausedGraphics;
+        private Graphic[] _menuGraphics;
+        private Graphic[] _victoryGraphics;
+        private Graphic[] _gameoverGraphics;
         public GameState GameState;
 
         public Game1()
@@ -50,38 +54,15 @@ namespace GameDevelopmentProject
 
         private void InitializeGameObjects()
         {
-            _hero = new Hero(250f);
-            _hero.AnimationManager.AddAnimation(AnimationState.running, Content.Load<Texture2D>("Sprites/Hero/Light/Run"), true, 120, 80, new Rectangle(48,43,18,37), new Rectangle(54,43,18,37));
-            _hero.AnimationManager.AddAnimation(AnimationState.idle, Content.Load<Texture2D>("Sprites/Hero/Light/Idle"), true, 120, 80, new Rectangle(47,43,18,37), new Rectangle(55,43,18,37));
-            _hero.AnimationManager.AddAnimation(AnimationState.jumping, Content.Load<Texture2D>("Sprites/Hero/Light/Jump"), true, 120, 80, new Rectangle(47, 43, 18, 37), new Rectangle(55, 43, 18, 37));
-            _hero.AnimationManager.AddAnimation(AnimationState.falling, Content.Load<Texture2D>("Sprites/Hero/Light/Fall"), true, 120, 80, new Rectangle(47, 43, 18, 37), new Rectangle(55, 43, 18, 37));
-            _hero.AnimationManager.CurrentAnimationState = AnimationState.idle;
-            _hero.AnimationManager.AnimationScale = 2.25f;
+            Hero = Hero.getNewHero(Content);
 
-            _level = LevelFactory.getLevel1(Content, _hero);
+            Level = LevelFactory.getLevel1(Content, Hero);
             _screen.SetCurrentResolution(_graphics);
 
-            buttons = new Button[]
-            {
-                new Button(
-                    "Resume",
-                    Content.Load<Texture2D>("Sprites/Interface/Buttons/resume"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (Content.Load<Texture2D>("Sprites/Interface/Buttons/resume").Width / 2),
-                    200*(int)ScreenSizeManager.getInstance().GetScale(),
-                    this),
-                new Button(
-                    "Menu",
-                    Content.Load<Texture2D>("Sprites/Interface/Buttons/menu"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (Content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
-                    450*(int)ScreenSizeManager.getInstance().GetScale(),
-                    this),
-                new Button(
-                    "Quit",
-                    Content.Load<Texture2D>("Sprites/Interface/Buttons/quit"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (Content.Load<Texture2D>("Sprites/Interface/Buttons/quit").Width / 2),
-                    700*(int)ScreenSizeManager.getInstance().GetScale(),
-                    this)
-            };
+            _pausedGraphics = Interface.getPausedGraphics(Content, this);
+            _menuGraphics = Interface.getMenuGraphics(Content, this);
+            _victoryGraphics = Interface.getVictoryGraphics(Content, this);
+            _gameoverGraphics = Interface.getGameoverGraphics(Content, this);
         }
 
         private bool previousEscapeButtonPressed = false;
@@ -91,35 +72,68 @@ namespace GameDevelopmentProject
             {
                 if (GameState == GameState.Playing)
                     GameState = GameState.Paused;
-                else
+                else if (GameState == GameState.Paused)
                     GameState = GameState.Playing;
             }
             previousEscapeButtonPressed = Keyboard.GetState().IsKeyDown(Keys.Escape);
+            _screen.SetCurrentResolution(_graphics);
 
-
-            if (GameState == GameState.Playing)
+            if(Level != null && Hero.RelativeBoundingBox.Intersects(Level.VictoryBoundingBox))
             {
-                _level.Update(gameTime);
-                _screen.SetCurrentResolution(_graphics);
-                base.Update(gameTime);
+                GameState = GameState.Victory;
+            } 
+            
+            if (GameState == GameState.Playing || GameState == GameState.GameOver || GameState == GameState.Victory)
+            {
+                Level.Update(gameTime, this);
+                if (GameState == GameState.GameOver)
+                {
+                    _gameoverGraphics.ToList().ForEach(e => { if (e is Button) ((Button)e).Update(gameTime); });
+                }
+                else if (GameState == GameState.Victory)
+                {
+                    _victoryGraphics.ToList().ForEach(e => { if (e is Button) ((Button)e).Update(gameTime); });
+                }
             }
             else if(GameState == GameState.Paused)
             {
-                buttons.ToList().ForEach(e => e.Update(gameTime));
-            }
+                _pausedGraphics.ToList().ForEach(e => { if (e is Button) ((Button)e).Update(gameTime); });
+            } 
+            else if(GameState == GameState.Menu)
+            {
+                _menuGraphics.ToList().ForEach(e => { if (e is Button) ((Button)e).Update(gameTime); });
+            } 
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
-            _level.Draw(_spriteBatch);
-            
-            if (GameState == GameState.Paused)
+
+            if (GameState == GameState.Playing || GameState == GameState.Paused || GameState == GameState.Victory || GameState == GameState.GameOver)
             {
-                Texture2D background = Content.Load<Texture2D>("Sprites/Interface/graytransparant");
+                Level.Draw(_spriteBatch);
+
+                if(GameState != GameState.Playing)
+                {
+                    Texture2D background = Content.Load<Texture2D>("Sprites/Interface/graytransparant");
+                    _spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
+
+                    if (GameState == GameState.Paused)
+                        _pausedGraphics.ToList().ForEach(e => e.Draw(_spriteBatch, 0));
+                    else if (GameState == GameState.Victory)
+                        _victoryGraphics.ToList().ForEach(e => e.Draw(_spriteBatch, 0));
+                    else if (GameState == GameState.GameOver)
+                        _gameoverGraphics.ToList().ForEach(e => e.Draw(_spriteBatch, 0));
+                }
+            }
+            else if (GameState == GameState.Menu)
+            {
+                Texture2D background = Content.Load<Texture2D>("Sprites/Interface/menubackground");
                 _spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
-                buttons.ToList().ForEach(e => e.Draw(_spriteBatch, 0));
+                _menuGraphics.ToList().ForEach(e => e.Draw(_spriteBatch, 0));
             }
 
             _spriteBatch.End();

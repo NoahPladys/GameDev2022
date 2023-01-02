@@ -30,13 +30,8 @@ namespace GameDevelopmentProject.Entity
             MaxJumpForce = 650;
         }*/
 
-        public Hostile()
+        public Hostile(int maxHealthPoints, int damage, Rectangle attackRange = new Rectangle()) : base(maxHealthPoints, damage, attackRange)
         {
-            //INITIALIZE ANIMATIONS
-            AnimationManager = new AnimationManager();
-
-            //INITIALIZE MOVEMENT
-            MovementManager = new MovementManager();
             GravityForce = 5;
             MaxGravityForce = 500;
             JumpForce = 400;
@@ -44,9 +39,9 @@ namespace GameDevelopmentProject.Entity
             MaxJumpForce = 320;
         }
 
-        override public void Update(GameTime gameTime, Level level)
+        override public void Update(GameTime gameTime, Game1 game = null)
         {
-            base.Update(gameTime, level);
+            base.Update(gameTime, game);
         }
 
         public void setInputReader(IInputReader inputReader)

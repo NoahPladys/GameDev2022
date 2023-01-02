@@ -17,12 +17,12 @@ namespace GameDevelopmentProject.Entity.Animation
         public Rectangle BoundingBox { get; }
         public Rectangle ReverseBoundingBox { get; }
         public int Counter { get; set; }
-        private List<AnimationFrame> _frames;
+        public List<AnimationFrame> Frames;
         private double _timeSinceLastFrame;
 
-        public Animations(Texture2D texture, bool loopAnimation, Rectangle boundingBox, Rectangle reverseBoundingBox)
+        public Animations(Texture2D texture, Rectangle boundingBox, Rectangle reverseBoundingBox, bool loopAnimation)
         {
-            _frames = new List<AnimationFrame>();
+            Frames = new List<AnimationFrame>();
             Texture = texture;
             IsLoopAnimation = loopAnimation;
             _timeSinceLastFrame = 0;
@@ -41,23 +41,25 @@ namespace GameDevelopmentProject.Entity.Animation
 
         public void AddFrame(AnimationFrame frame)
         {
-            _frames.Add(frame);
-            CurrentFrame = _frames[0];
+            Frames.Add(frame);
+            CurrentFrame = Frames[0];
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, AnimationManager animationManager)
         {
-            CurrentFrame = _frames[Counter];
+            CurrentFrame = Frames[Counter];
 
             _timeSinceLastFrame += gameTime.ElapsedGameTime.TotalSeconds;
             int fps = 10;
 
             if (_timeSinceLastFrame >= 1d / fps)
             {
-                if (Counter == _frames.Count - 1)
+                if (Counter == Frames.Count - 1)
                 {
                     if (IsLoopAnimation)
+                    {
                         Counter = 0;
+                    }
                 }
                 else
                     Counter++;

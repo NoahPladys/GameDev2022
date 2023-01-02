@@ -1,4 +1,5 @@
 ﻿using GameDevelopmentProject.Entity.Animation;
+using GameDevelopmentProject.Entity.Combat;
 using GameDevelopmentProject.Interfaces;
 using GameDevelopmentProject.Levels;
 using Microsoft.VisualBasic;
@@ -22,7 +23,11 @@ namespace GameDevelopmentProject.Entity.Movement
     {
         internal void Move(IMovable movable, Level level, GameTime gameTime)
         {
-            Vector2 direction = movable.InputReader.ReadInput();
+            Vector2 direction;
+            if (movable is IHealth && ((IHealth)movable).IsDead)
+                direction = new Vector2(0);
+            else
+                direction = movable.InputReader.ReadInput();
             float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.getInstance().GetScale();
             Vector2 distance = new Vector2(direction.X * (movable.Speed * scale), 0);
             Vector2 previousPosition;

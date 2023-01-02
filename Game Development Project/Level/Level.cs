@@ -21,20 +21,28 @@ namespace GameDevelopmentProject.Levels
 {
     public class Level : IGameObject
     {
+        public int LevelNumber;
         public Tile[,] Tileset;
         public Texture2D Background;
         public Texture2D BackgroundObject;
         private readonly int tilesetHeight = 16;
         public Hero Hero;
         public List<Hostile> Hostiles = new List<Hostile>();
+        public Rectangle VictoryBoundingBox;
 
-        public Level(char[,] tileSet, Rectangle tileBoundingBox, Hero hero, Texture2D tilesetTexture, Texture2D backgroundTexture, Texture2D backgroundObjectTexture = null)
+        public Level(int levelNumber, char[,] tileSet, Rectangle tileBoundingBox, Rectangle victoryBoundingBox, Hero hero, Texture2D tilesetTexture, Texture2D backgroundTexture, Texture2D backgroundObjectTexture = null)
         {
+            LevelNumber = levelNumber;
             Tileset = TilesetFactory.GenerateTileSet(
                 tileSet,
                 tilesetTexture,
                 this.getTileScale(),
                 tileBoundingBox);
+            VictoryBoundingBox = new Rectangle(
+                (int)Math.Round(victoryBoundingBox.X * getTileScale() * 16),
+                (int)Math.Round(victoryBoundingBox.Y * getTileScale() * 16),
+                (int)Math.Round(victoryBoundingBox.Width * getTileScale() * 16),
+                (int)Math.Round(victoryBoundingBox.Height * getTileScale() * 16));
             Background = backgroundTexture;
             BackgroundObject = backgroundObjectTexture;
             Hero = hero;
@@ -43,10 +51,10 @@ namespace GameDevelopmentProject.Levels
                 Tileset[getLowestTileHeight(2), 2].Position.Y - Hero.BoundingBox.Height);
         }
 
-        public void Update(GameTime gameTime, Level level = null)
+        public void Update(GameTime gameTime, Game1 game = null)
         {
-            Hero.Update(gameTime, this);
-            Hostiles.ForEach(e => e.Update(gameTime, this));
+            Hero.Update(gameTime, game);
+            Hostiles.ForEach(e => e.Update(gameTime, game));
         }
 
         public void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0)
@@ -66,7 +74,7 @@ namespace GameDevelopmentProject.Levels
                     Color.White,
                     0,
                     new Vector2(0, 0),
-                    backgroundScale,
+                    backgroundScale+0.001f,
                     SpriteEffects.None,
                     0);
 

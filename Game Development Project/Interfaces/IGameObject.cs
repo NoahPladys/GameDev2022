@@ -11,7 +11,7 @@ namespace GameDevelopmentProject.Interfaces
 {
     interface IGameObject
     {
-        void Update(GameTime gameTime, Level level = null);
+        void Update(GameTime gameTime, Game1 game = null);
 
         void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0);
     }
