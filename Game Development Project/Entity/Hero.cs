@@ -26,7 +26,7 @@ namespace GameDevelopmentProject.Entity
         {
             InputReader = new KeyboardReader();
             Position = new Vector2(0, 0);
-            Speed = speed*4;
+            Speed = speed;
 
             GravityForce = 25;
             MaxGravityForce = 800;
