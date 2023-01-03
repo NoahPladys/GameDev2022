@@ -16,6 +16,7 @@ using GameDevelopmentProject.Entity.Controls;
 using GameDevelopmentProject.Entity.Movement;
 using GameDevelopmentProject.Levels;
 using Microsoft.Xna.Framework.Content;
+using GameDevelopmentProject.UserInterface;
 
 namespace GameDevelopmentProject.Entity
 {
@@ -25,7 +26,7 @@ namespace GameDevelopmentProject.Entity
         {
             InputReader = new KeyboardReader();
             Position = new Vector2(0, 0);
-            Speed = speed;
+            Speed = speed*4;
 
             GravityForce = 25;
             MaxGravityForce = 800;
@@ -37,6 +38,11 @@ namespace GameDevelopmentProject.Entity
         override public void Update(GameTime gameTime, Game1 game = null)
         {
             base.Update(gameTime, game);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0)
+        {
+            base.Draw(spriteBatch, cameraHorizontalOffset);
         }
 
         public static Hero getNewHero(ContentManager content)

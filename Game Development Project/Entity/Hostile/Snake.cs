@@ -28,8 +28,8 @@ namespace GameDevelopmentProject.Entity
             this.AnimationManager.AddAnimation(AnimationState.idle, content.Load<Texture2D>("Sprites/Hostiles/Snake/idle"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), true);
             this.AnimationManager.AddAnimation(AnimationState.jumping, content.Load<Texture2D>("Sprites/Hostiles/Snake/idle"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), true);
             this.AnimationManager.AddAnimation(AnimationState.falling, content.Load<Texture2D>("Sprites/Hostiles/Snake/idle"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), true);
-            this.AnimationManager.AddAnimation(AnimationState.hit, content.Load<Texture2D>("Sprites/Hostiles/Snake/hit"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), true);
-            this.AnimationManager.AddAnimation(AnimationState.dead, content.Load<Texture2D>("Sprites/Hostiles/Snake/dead"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), true);
+            this.AnimationManager.AddAnimation(AnimationState.hit, content.Load<Texture2D>("Sprites/Hostiles/Snake/hit"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), false);
+            this.AnimationManager.AddAnimation(AnimationState.dead, content.Load<Texture2D>("Sprites/Hostiles/Snake/die"), 30, 19, new Rectangle(0, 3, 19, 16), new Rectangle(11, 3, 19, 16), false);
             this.AnimationManager.CurrentAnimationState = AnimationState.idle;
             this.AnimationManager.AnimationScale = 2.5f;
         }

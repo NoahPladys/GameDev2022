@@ -29,6 +29,7 @@ namespace GameDevelopmentProject.Levels
         public Hero Hero;
         public List<Hostile> Hostiles = new List<Hostile>();
         public Rectangle VictoryBoundingBox;
+        public Coin[] Coins = new Coin[3];
 
         public Level(int levelNumber, char[,] tileSet, Rectangle tileBoundingBox, Rectangle victoryBoundingBox, Hero hero, Texture2D tilesetTexture, Texture2D backgroundTexture, Texture2D backgroundObjectTexture = null)
         {
@@ -55,6 +56,7 @@ namespace GameDevelopmentProject.Levels
         {
             Hero.Update(gameTime, game);
             Hostiles.ForEach(e => e.Update(gameTime, game));
+            Coins.ToList().ForEach(e => { if (e != null && !e.IsPickedUp) e.Update(gameTime, game); });
         }
 
         public void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0)
@@ -112,6 +114,15 @@ namespace GameDevelopmentProject.Levels
                             tileScale,
                             SpriteEffects.None,
                             0);
+                }
+            }
+
+            //DRAW COINS
+            for(int i=0; i<Coins.Length; i++)
+            {
+                if(Coins[i] != null && !Coins[i].IsPickedUp)
+                {
+                    Coins[i].Draw(spriteBatch, cameraHorizontalOffset);
                 }
             }
 

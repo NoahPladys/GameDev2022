@@ -40,7 +40,7 @@ namespace GameDevelopmentProject.Entity.Animation
 
         public void Update(GameTime gameTime)
         {
-            this.CurrentAnimation.Update(gameTime, this);
+            this.CurrentAnimation.Update(gameTime);
         }
 
         public void AddAnimation(AnimationState animationState, Texture2D texture, int frameWidth, int frameHeight, Rectangle boundingBox, Rectangle reverseBoundingBox, bool loopAnimation, bool stayonlastframe = false)

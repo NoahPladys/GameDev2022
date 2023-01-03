@@ -1,17 +1,76 @@
-﻿using GameDevelopmentProject.Interfaces;
+﻿using GameDevelopmentProject.Entity;
+using GameDevelopmentProject.Interfaces;
+using GameDevelopmentProject.Levels;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 namespace GameDevelopmentProject.UserInterface
 {
     internal class Interface
     {
+        public static void DrawIcons(Hero hero, Level level, SpriteBatch spriteBatch, Texture2D heartTexture, Texture2D missingHeartTexture, Texture2D coinTexture, Texture2D missingCoinTexture)
+        {
+            //DRAW HEARTS
+            float scale = ScreenSizeManager.getInstance().GetScale();
+            float spacing = 15 * scale;
+            Texture2D currentTexture = heartTexture;
+            Vector2 currentHeartPosition = new Vector2(30*scale, 30 * scale);
+            for (int i = 0; i < hero.MaxHealthPoints; i++)
+            {
+                if (i >= hero.CurrentHealthPoints)
+                    currentTexture = missingHeartTexture;
+
+                spriteBatch.Draw(
+                    currentTexture,
+                    currentHeartPosition,
+                    new Rectangle(0, 0, currentTexture.Width, currentTexture.Height),
+                    Color.White,
+                    0,
+                    new Vector2(0, 0),
+                    scale*3,
+                    SpriteEffects.None,
+                    0);
+
+                currentHeartPosition.X += (spacing + heartTexture.Width) * 3;
+            }
+
+            //DRAW COINS
+            scale = ScreenSizeManager.getInstance().GetScale() * 1.5f;
+            spacing = 13 * scale;
+            currentTexture = coinTexture;
+            Coin[] coins = level.Coins.Where(e => (e != null)).ToArray();
+            Vector2 currentCoinPosition = new Vector2(ScreenSizeManager.getInstance().WindowWidth - (((spacing + coinTexture.Width) * 3) * coins.Length), 20 * scale);
+            for (int i = 0; i < coins.Length; i++)
+            {
+                if (!level.Coins[i].IsPickedUp)
+                    currentTexture = missingCoinTexture;
+                else
+                    currentTexture = coinTexture;
+
+                spriteBatch.Draw(
+                    currentTexture,
+                    currentCoinPosition,
+                    new Rectangle(0, 0, currentTexture.Width, currentTexture.Height),
+                    Color.White,
+                    0,
+                    new Vector2(0, 0),
+                    scale * 3,
+                    SpriteEffects.None,
+                    0);
+
+                currentCoinPosition.X += (spacing + coinTexture.Width) * 3;
+            }
+        }
+        
         public static Graphic[] getMenuGraphics(ContentManager content, Game1 game)
         {
             return new Graphic[]

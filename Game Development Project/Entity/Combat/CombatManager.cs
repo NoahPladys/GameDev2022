@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Level = GameDevelopmentProject.Levels.Level;
 
 namespace GameDevelopmentProject.Entity.Combat
 {
@@ -72,7 +73,6 @@ namespace GameDevelopmentProject.Entity.Combat
                 }
                 else if (attacking is Hostile) // HOSTILE ATTACKING HERO
                 {
-                    Debug.WriteLine(lastAttack);
                     if(!hasAttacked || lastAttack >= 1f)
                     {
                         if (attacking is ICollidable)

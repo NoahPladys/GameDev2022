@@ -45,7 +45,7 @@ namespace GameDevelopmentProject.Entity.Animation
             CurrentFrame = Frames[0];
         }
 
-        public void Update(GameTime gameTime, AnimationManager animationManager)
+        public void Update(GameTime gameTime)
         {
             CurrentFrame = Frames[Counter];
 

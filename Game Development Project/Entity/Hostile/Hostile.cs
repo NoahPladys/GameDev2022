@@ -13,23 +13,6 @@ namespace GameDevelopmentProject.Entity
 {
     public class Hostile : Entity
     {
-        /*public Hostile(HostileType hostileType)
-        {
-            //INITIALIZE ANIMATIONS
-            AnimationManager = new AnimationManager();
-
-            //INITIALIZE MOVEMENT
-            MovementManager = new MovementManager();
-            InputReader = new KeyboardReader();
-            Position = new Vector2(0, 0);
-            Speed = 20;
-            GravityForce = 25;
-            MaxGravityForce = 800;
-            JumpForce = 800;
-            JumpForceDecrease = 25;
-            MaxJumpForce = 650;
-        }*/
-
         public Hostile(int maxHealthPoints, int damage, Rectangle attackRange = new Rectangle()) : base(maxHealthPoints, damage, attackRange)
         {
             GravityForce = 5;

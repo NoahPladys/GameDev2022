@@ -10,9 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
@@ -43,14 +45,18 @@ namespace GameDevelopmentProject.UserInterface
         {
             if (lastState == ButtonState.Released && enterButton() && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
+                Debug.WriteLine(Action);
                 if (Action == "Resume")
                 {
+                    MusicPlayer.Paused(false);
                     _game.GameState = GameState.Playing;
                 }
                 else if (Action == "Menu")
                 {
                     _game.GameState = GameState.Menu;
                     _game.Level = null;
+                    MusicPlayer.Paused(false);
+                    MusicPlayer.PlaySong(_game.Content, 0);
                 }
                 else if (Action == "Quit")
                 {
@@ -58,16 +64,20 @@ namespace GameDevelopmentProject.UserInterface
                 }
                 else if (Action == "Retry" || Action == "Next" || Action.Substring(0, 5) == "Level")
                 {
+                    int levelIndex;
                     if (Action == "Retry")
                     {
-                        Action = "Level" + _game.Level.LevelNumber;
+                        levelIndex = _game.Level.LevelNumber;
                     }
                     else if (Action == "Next")
                     {
-                        Action = "Level" + (_game.Level.LevelNumber + 1);
+                        levelIndex = _game.Level.LevelNumber + 1;
+                    } 
+                    else
+                    {
+                        levelIndex = int.Parse(Action.Substring(5, 1));
                     }
 
-                    int levelIndex = int.Parse(Action.Substring(5,1));
                     if (LevelFactory.Exists(levelIndex))
                     {
                         _game.Hero = Hero.getNewHero(_game.Content);
@@ -76,7 +86,9 @@ namespace GameDevelopmentProject.UserInterface
                     }
                     else
                     {
+                        _game.Level = null;
                         _game.GameState = GameState.Menu;
+                        MusicPlayer.PlaySong(_game.Content, 0);
                     }
                 }
             }
