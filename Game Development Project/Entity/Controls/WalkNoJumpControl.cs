@@ -20,7 +20,7 @@ namespace GameDevelopmentProject.Entity.Controls
         {
             _hero = hero;
             _hostile = hostile;
-            _range = range * ScreenSizeManager.getInstance().GetScale();
+            _range = range * ScreenSizeManager.GetInstance().GetScale();
         }
 
         public Vector2 ReadInput()

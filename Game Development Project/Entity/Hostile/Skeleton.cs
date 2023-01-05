@@ -19,11 +19,6 @@ namespace GameDevelopmentProject.Entity
         {
             Position = startPosition;
             Speed = 100f;
-            GravityForce = 8;
-            MaxGravityForce = 500;
-            JumpForce = 300;
-            JumpForceDecrease = 8;
-            MaxJumpForce = 220;
 
             setInputReader(new WalkNoJumpControl(hero, this, 450f));
             AnimationManager.AddAnimation(AnimationState.running, content.Load<Texture2D>("Sprites/Hostiles/Skeleton/walk"), 38, 24, new Rectangle(10, 1, 10, 23), new Rectangle(17, 1, 10, 23), true);

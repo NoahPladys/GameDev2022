@@ -59,10 +59,10 @@ namespace GameDevelopmentProject.Entity.Animation
                 boundingBox = CurrentAnimation.ReverseBoundingBox;
 
             return new Rectangle(
-                (int)Math.Round(boundingBox.X * AnimationScale * ScreenSizeManager.getInstance().GetScale()),
-                (int)Math.Round(boundingBox.Y * AnimationScale * ScreenSizeManager.getInstance().GetScale()),
-                (int)Math.Round(boundingBox.Width * AnimationScale * ScreenSizeManager.getInstance().GetScale()),
-                (int)Math.Round(boundingBox.Height * AnimationScale * ScreenSizeManager.getInstance().GetScale()));
+                (int)Math.Round(boundingBox.X * AnimationScale * ScreenSizeManager.GetInstance().GetScale()),
+                (int)Math.Round(boundingBox.Y * AnimationScale * ScreenSizeManager.GetInstance().GetScale()),
+                (int)Math.Round(boundingBox.Width * AnimationScale * ScreenSizeManager.GetInstance().GetScale()),
+                (int)Math.Round(boundingBox.Height * AnimationScale * ScreenSizeManager.GetInstance().GetScale()));
         }
 
         public void SetAnimation(Vector2 direction)

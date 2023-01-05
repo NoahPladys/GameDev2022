@@ -36,7 +36,7 @@ namespace GameDevelopmentProject
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _screen = ScreenSizeManager.getInstance();
+            _screen = ScreenSizeManager.GetInstance();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -56,9 +56,8 @@ namespace GameDevelopmentProject
 
         private void InitializeGameObjects()
         {
+            MusicPlayer.PlaySong(Content, 0);
             Hero = Hero.getNewHero(Content);
-
-            Level = LevelFactory.getLevel1(Content, Hero);
             _screen.SetCurrentResolution(_graphics);
 
             _pausedGraphics = Interface.getPausedGraphics(Content, this);

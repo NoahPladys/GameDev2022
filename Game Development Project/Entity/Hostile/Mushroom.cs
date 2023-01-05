@@ -19,11 +19,6 @@ namespace GameDevelopmentProject.Entity
         {
             Position = startPosition;
             Speed = 100f;
-            GravityForce = 8;
-            MaxGravityForce = 500;
-            JumpForce = 300;
-            JumpForceDecrease = 8;
-            MaxJumpForce = 220;
 
             this.setInputReader(new WalkNoJumpControl(hero, this, 450f));
             this.AnimationManager.AddAnimation(AnimationState.running, content.Load<Texture2D>("Sprites/Hostiles/Mushroom/running"), 24, 16, new Rectangle(4, 4, 12, 12), new Rectangle(8, 4, 12, 12), true);

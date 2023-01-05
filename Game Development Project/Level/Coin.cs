@@ -38,9 +38,9 @@ namespace GameDevelopmentProject.Levels
                 new Rectangle(2, 2, 16, 16),
                 true);
             _animation.AddFrames(16, 16);
-            Position = position * ScreenSizeManager.getInstance().GetScale();
+            Position = position * ScreenSizeManager.GetInstance().GetScale();
             IsPickedUp = false;
-            _scale = ScreenSizeManager.getInstance().GetScale() * 4;
+            _scale = ScreenSizeManager.GetInstance().GetScale() * 4;
         }
 
         public void Draw(SpriteBatch spriteBatch, float cameraHorizontalOffset = 0)

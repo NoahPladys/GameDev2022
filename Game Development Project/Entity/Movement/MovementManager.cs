@@ -28,7 +28,7 @@ namespace GameDevelopmentProject.Entity.Movement
                 direction = new Vector2(0);
             else
                 direction = movable.InputReader.ReadInput();
-            float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.getInstance().GetScale();
+            float scale = (float)gameTime.ElapsedGameTime.TotalSeconds * ScreenSizeManager.GetInstance().GetScale();
             Vector2 distance = new Vector2(direction.X * (movable.Speed * scale), 0);
             Vector2 previousPosition;
             Vector2 startPosition = movable.Position;

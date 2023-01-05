@@ -26,7 +26,7 @@ namespace GameDevelopmentProject.Entity.Controls
         {
             _hero = hero;
             _hostile = hostile;
-            _range = range * ScreenSizeManager.getInstance().GetScale();
+            _range = range * ScreenSizeManager.GetInstance().GetScale();
             _timeBetweenJumps = 1d;
             _jump = false;
         }

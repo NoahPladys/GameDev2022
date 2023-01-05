@@ -18,7 +18,7 @@ namespace GameDevelopmentProject
     {
         private static ScreenSizeManager instance = new ScreenSizeManager();
 
-        public static ScreenSizeManager getInstance()
+        public static ScreenSizeManager GetInstance()
         {
             return instance;
         }

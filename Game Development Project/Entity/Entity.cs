@@ -58,18 +58,18 @@ namespace GameDevelopmentProject.Entity
                 if(AnimationManager.SpriteEffect != SpriteEffects.None)
                 {
                     return new Rectangle(
-                        (int)Math.Round(Position.X + (_attackRange.X * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale * -1) - _attackRange.Width * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale),
-                        (int)Math.Round(Position.Y + (_attackRange.Y * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale)),
-                        (int)Math.Round(_attackRange.Width * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale),
-                        (int)Math.Round(_attackRange.Height * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale));
+                        (int)Math.Round(Position.X + (_attackRange.X * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale * -1) - _attackRange.Width * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale),
+                        (int)Math.Round(Position.Y + (_attackRange.Y * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale)),
+                        (int)Math.Round(_attackRange.Width * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale),
+                        (int)Math.Round(_attackRange.Height * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale));
                 }
                 else
                 {
                     return new Rectangle(
-                        (int)Math.Round(Position.X + (_attackRange.X * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale)),
-                        (int)Math.Round(Position.Y + (_attackRange.Y * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale)),
-                        (int)Math.Round(_attackRange.Width * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale),
-                        (int)Math.Round(_attackRange.Height * ScreenSizeManager.getInstance().GetScale() * AnimationManager.AnimationScale));
+                        (int)Math.Round(Position.X + (_attackRange.X * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale)),
+                        (int)Math.Round(Position.Y + (_attackRange.Y * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale)),
+                        (int)Math.Round(_attackRange.Width * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale),
+                        (int)Math.Round(_attackRange.Height * ScreenSizeManager.GetInstance().GetScale() * AnimationManager.AnimationScale));
                 }
             }
         }
@@ -103,14 +103,14 @@ namespace GameDevelopmentProject.Entity
                 Color.White,
                 0,
                 new Vector2(0, 0),
-                AnimationManager.AnimationScale * ScreenSizeManager.getInstance().GetScale(),
+                AnimationManager.AnimationScale * ScreenSizeManager.GetInstance().GetScale(),
                 AnimationManager.SpriteEffect,
                 0);
         }
 
         private float getBoundingboxScale()
         {
-            return ScreenSizeManager.getInstance().GetScale() * this.AnimationManager.AnimationScale;
+            return ScreenSizeManager.GetInstance().GetScale() * this.AnimationManager.AnimationScale;
         }
     }
 }

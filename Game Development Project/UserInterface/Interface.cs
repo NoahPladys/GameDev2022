@@ -20,7 +20,7 @@ namespace GameDevelopmentProject.UserInterface
         public static void DrawIcons(Hero hero, Level level, SpriteBatch spriteBatch, Texture2D heartTexture, Texture2D missingHeartTexture, Texture2D coinTexture, Texture2D missingCoinTexture)
         {
             //DRAW HEARTS
-            float scale = ScreenSizeManager.getInstance().GetScale();
+            float scale = ScreenSizeManager.GetInstance().GetScale();
             float spacing = 15 * scale;
             Texture2D currentTexture = heartTexture;
             Vector2 currentHeartPosition = new Vector2(30*scale, 30 * scale);
@@ -44,11 +44,11 @@ namespace GameDevelopmentProject.UserInterface
             }
 
             //DRAW COINS
-            scale = ScreenSizeManager.getInstance().GetScale() * 1.5f;
+            scale = ScreenSizeManager.GetInstance().GetScale() * 1.5f;
             spacing = 13 * scale;
             currentTexture = coinTexture;
             Coin[] coins = level.Coins.Where(e => (e != null)).ToArray();
-            Vector2 currentCoinPosition = new Vector2(ScreenSizeManager.getInstance().WindowWidth - (((spacing + coinTexture.Width) * 3) * coins.Length), 20 * scale);
+            Vector2 currentCoinPosition = new Vector2(ScreenSizeManager.GetInstance().WindowWidth - (((spacing + coinTexture.Width) * 3) * coins.Length), 20 * scale);
             for (int i = 0; i < coins.Length; i++)
             {
                 if (!level.Coins[i].IsPickedUp)
@@ -77,33 +77,33 @@ namespace GameDevelopmentProject.UserInterface
             {
                 new Graphic(
                     content.Load<Texture2D>("Sprites/Interface/Title"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Title").Width / 2),
-                    100*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Title").Width / 2),
+                    100*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game
                     ),
                 new Button(
                 "Level1",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/level1"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level1").Width / 2),
-                    300*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level1").Width / 2),
+                    300*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                 "Level2",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/level2"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level2").Width / 2),
-                    475*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level2").Width / 2),
+                    475*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                 "Level3",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/level3"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level3").Width / 2),
-                    650*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/level3").Width / 2),
+                    650*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                 "Quit",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/quit"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/quit").Width / 2),
-                    850*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/quit").Width / 2),
+                    850*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game)
             };
         }
@@ -114,27 +114,27 @@ namespace GameDevelopmentProject.UserInterface
             {
                 new Graphic(
                     content.Load<Texture2D>("Sprites/Interface/Paused"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Paused").Width / 2),
-                    100*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Paused").Width / 2),
+                    100*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game
                     ),
                 new Button(
                     "Resume",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/resume"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/resume").Width / 2),
-                    300*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/resume").Width / 2),
+                    300*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                     "Menu",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/menu"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
-                    500*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
+                    500*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                     "Quit",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/quit"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/quit").Width / 2),
-                    700*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/quit").Width / 2),
+                    700*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game)
             };
         }
@@ -145,21 +145,21 @@ namespace GameDevelopmentProject.UserInterface
             {
                 new Graphic(
                     content.Load<Texture2D>("Sprites/Interface/victory"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/victory").Width / 2),
-                    250*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/victory").Width / 2),
+                    250*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game
                     ),
                 new Button(
                     "Next",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/next"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/next").Width / 2),
-                    450*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/next").Width / 2),
+                    450*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                     "Menu",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/menu"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
-                    650*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
+                    650*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
             };
         }
@@ -170,21 +170,21 @@ namespace GameDevelopmentProject.UserInterface
             {
                 new Graphic(
                     content.Load<Texture2D>("Sprites/Interface/gameover"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/gameover").Width / 2),
-                    250*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/gameover").Width / 2),
+                    250*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game
                     ),
                 new Button(
                     "Retry",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/retry"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/retry").Width / 2),
-                    450*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/retry").Width / 2),
+                    450*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game),
                 new Button(
                     "Menu",
                     content.Load<Texture2D>("Sprites/Interface/Buttons/menu"),
-                    (ScreenSizeManager.getInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
-                    650*(int)ScreenSizeManager.getInstance().GetScale(),
+                    (ScreenSizeManager.GetInstance().WindowWidth / 2) - (content.Load<Texture2D>("Sprites/Interface/Buttons/menu").Width / 2),
+                    650*(int)ScreenSizeManager.GetInstance().GetScale(),
                     game)
             };
         }

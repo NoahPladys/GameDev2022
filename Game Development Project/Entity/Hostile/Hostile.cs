@@ -15,11 +15,11 @@ namespace GameDevelopmentProject.Entity
     {
         public Hostile(int maxHealthPoints, int damage, Rectangle attackRange = new Rectangle()) : base(maxHealthPoints, damage, attackRange)
         {
-            GravityForce = 5;
+            GravityForce = 8;
             MaxGravityForce = 500;
-            JumpForce = 400;
-            JumpForceDecrease = 5;
-            MaxJumpForce = 320;
+            JumpForce = 300;
+            JumpForceDecrease = 8;
+            MaxJumpForce = 220;
         }
 
         override public void Update(GameTime gameTime, Game1 game = null)
